@@ -26,7 +26,7 @@ void loop()
 //  Serial.print("Left sensor value: ");
 //  Serial.println(leftSensorValue);
   Serial.print("Middle sensor value: ");
-  Serial.println(midSensorValue);
+  Serial.println(String(midSensorValue));
   delay(3000);
 //  Serial.print("Right sensor value: ");
 //  Serial.println(rightSensorValue);

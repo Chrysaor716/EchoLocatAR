@@ -2,19 +2,20 @@
 // 	from the Arduino to the Unity mobile app
 //	using Socket.io
 
-var SerialPort = require('serialport');
+var SerialPort = require('serialport').SerialPort;
 
 // Pass in the port the Arduino is running on
 //	through the command line
-//	Example of invoking the Node server:
+//	Example of invoking the Node server on Windows:
 //		node transmit.js COM3
+//	Example of invoking the Node server on Linux/OSX:
+//		node transmit.js /dev/ttyACM0
 //
 // Capture serial port argument
 var port = process.argv[2]
 
 var sp = new SerialPort(port, {
-	baudrate: 9600,
-	parser:   SerialPort.parsers.readline('\n')
+	baudrate: 9600
 });
 
 // Event listeners
@@ -35,6 +36,6 @@ function onClose() {
 	console.log('Port closed!');
 }
 
-function onError() {
-	console.log('Error occurred!');
+function onError(err) {
+	console.log('ERROR: ' + err);
 }
