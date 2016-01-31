@@ -22,25 +22,11 @@ void loop()
   int midSensorValue = analogRead(MID_SENSOR); // Get electrical signal readings from A1
   int rightSensorValue = analogRead(RIGHT_SENSOR); // Get electrical signal readings from A2
 
-//// Print on serial as a JSON object
-//Serial.print("{\'A0\': \'");
-//Serial.print(leftSensorValue);
-//Serial.println("\'");
-//Serial.print("\'A1\': \'");
-//Serial.print(midSensorValue);
-//Serial.println("\'");
-//Serial.print("\'A2\': \'");
-//Serial.print(rightSensorValue);
-//Serial.println("\'}");
-
-Serial.print("Left = ");
-Serial.println(leftSensorValue);
-Serial.print("Middle = ");
-Serial.println(midSensorValue);
-Serial.print("Right = ");
-Serial.println(rightSensorValue);
-
-delay(5000);
+  // Print on serial as a JSON object
+  Serial.println("{\"A0\": \"" + String(leftSensorValue, DEC) +
+  "\", \"A1\": \"" + String(midSensorValue, DEC) +
+  "\", \"A2\": \"" + String(rightSensorValue, DEC) + "\"}");
+  delay(5000);
 }
 
 void pins_init()

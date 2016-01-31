@@ -2,7 +2,7 @@
 // 	from the Arduino to the Unity mobile app
 //	using Socket.io
 
-//var scrapper = require('json-scrape')();
+var io = require('socket.io')();
 //var SerialPort = require('serialport').SerialPort;
 var serialport = require('serialport');
 var SerialPort = serialport.SerialPort;
@@ -17,33 +17,40 @@ var SerialPort = serialport.SerialPort;
 // Capture serial port argument
 var port = process.argv[2]
 
-//SerialPort.list(function(err, ports) {
-//	console.log(ports);
-//});
-
 var serialport = new SerialPort(port, {
 	baudrate: 9600,
 	parser: serialport.parsers.readline("\n")
 });
 
+// Create a new socket
+io.sockets.on('connection', function(socket) {
+	console.log('Connection established.');
+	// Listen to Arduino messages0
+	serialport.on('data', function(data) {
+		onData(data, socket);
+	});
+});
+io.listen(4567);
+
 // Event listeners
 serialport.on('open', onPortOpen);
-serialport.on('data', onData);
+//serialport.on('data', onData);
 serialport.on('close', onClose);
 serialport.on('error', onError);
-
-//scrapper.on('data', function(jsondata) {
-//	console.log(jsondata);
-//});
 
 function onPortOpen() {
 	console.log('Port open!');
 }
 
-function onData(data) {
-	console.log('Data received: ' + data);
-//	scrapper.write(data.toString());
-}
+onData = function(data, socket) {
+	try {
+		var jsondata = JSON.parse(data);
+		console.log('Data received: %j', jsondata);
+		socket.broadcast.emit(JSON.stringify(jsondata));
+	} catch (err) {
+		return console.error(err);
+	} 
+};
 
 function onClose() {
 	console.log('Port closed!');
