@@ -26,7 +26,7 @@ void loop()
   Serial.println("{\"A0\": \"" + String(leftSensorValue, DEC) +
   "\", \"A1\": \"" + String(midSensorValue, DEC) +
   "\", \"A2\": \"" + String(rightSensorValue, DEC) + "\"}");
-  delay(5000);
+  delay(200);
 }
 
 void pins_init()

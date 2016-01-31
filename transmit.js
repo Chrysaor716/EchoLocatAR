@@ -3,6 +3,11 @@
 //	using Socket.io
 
 var io = require('socket.io')();
+var app = require('http').createServer(handler);
+var fs = require('fs');
+
+app.listen(80);
+
 //var SerialPort = require('serialport').SerialPort;
 var serialport = require('serialport');
 var SerialPort = serialport.SerialPort;
@@ -22,15 +27,16 @@ var serialport = new SerialPort(port, {
 	parser: serialport.parsers.readline("\n")
 });
 
-// Create a new socket
-io.sockets.on('connection', function(socket) {
-	console.log('Connection established.');
-	// Listen to Arduino messages0
-	serialport.on('data', function(data) {
-		onData(data, socket);
-	});
-});
-io.listen(4567);
+onData = function(data, socket) {
+	try {
+		var jsondata = JSON.parse(data);
+		console.log('Data received: %j', jsondata);
+		socket.emit(JSON.stringify(jsondata));
+	} catch (err) {
+		return console.error(err);
+	} 
+};
+
 
 // Event listeners
 serialport.on('open', onPortOpen);
@@ -42,16 +48,6 @@ function onPortOpen() {
 	console.log('Port open!');
 }
 
-onData = function(data, socket) {
-	try {
-		var jsondata = JSON.parse(data);
-		console.log('Data received: %j', jsondata);
-		socket.broadcast.emit(JSON.stringify(jsondata));
-	} catch (err) {
-		return console.error(err);
-	} 
-};
-
 function onClose() {
 	console.log('Port closed!');
 }
@@ -59,3 +55,30 @@ function onClose() {
 function onError(err) {
 	console.log('ERROR: ' + err);
 }
+
+function handler (req, res) {
+  fs.readFile(__dirname + '/index.html',
+  function (err, data) {
+    if (err) {
+      res.writeHead(500);
+      return res.end('Error loading index.html');
+    }
+
+    res.writeHead(200);
+    res.end(data);
+  });
+}
+
+io.on('connection', function(socket){
+	console.log('connection');
+	serialPort.on('data', function(data) {
+		 try {
+                	var jsondata = JSON.parse(data);
+                	console.log('Data received: %j', jsondata);
+                	socket.emit(jsondata);
+        	} catch (err) {
+                	return console.error(err);
+        	}
+	
+	});	
+});
