@@ -4,10 +4,12 @@
  */
 
 /*macro definitions of the sound sensor and the LED*/
-#define SOUND_SENSOR A0
-#define LED 3      // the number of the LED pin
+#define LEFT_SENSOR A0
+#define MID_SENSOR A1
+#define RIGHT_SENSOR A2
+#define LED 3      // Test LED that lights up when sound reaches a threshold
 
-#define THRESHOLD_VALUE 800 //The threshold to turn the led on 800.00*5/1024 = 1.95v <- INCORRECT RESULT LOL
+//#define THRESHOLD_VALUE 800 // Threshold to turn on LED: 800.00*5/1024 = ~3.9v
 void setup() 
 {
     Serial.begin(9600);
@@ -16,27 +18,38 @@ void setup()
  
 void loop() 
 {
-  int sensorValue = analogRead(SOUND_SENSOR); //use A0 to read the electrical signal
-  Serial.print("sensorValue: ");
-        Serial.println(sensorValue);
-   if(sensorValue > THRESHOLD_VALUE)
-  {
-    turnOnLED(); //if the value read from A0 is larger than 800,then light the LED
-    delay(200);
-  }
-  turnOffLED();
+  int leftSensorValue = analogRead(LEFT_SENSOR); // Get electrical signal readings from A0
+  int midSensorValue = analogRead(MID_SENSOR); // Get electrical signal readings from A1
+  int rightSensorValue = analogRead(RIGHT_SENSOR); // Get electrical signal readings from A2
+
+  //  Print to terminal
+  Serial.print("Left sensor value: ");
+  Serial.println(leftSensorValue);
+  Serial.print("Middle sensor value: ");
+  Serial.println(midSensorValue);
+  Serial.print("Right sensor value: ");
+  Serial.println(rightSensorValue);
+        
+//  if(sensorValue > THRESHOLD_VALUE)
+//  {
+//    turnOnLED(); //if the value read from A0 is larger than 800,then light the LED
+//    delay(200);
+//  }
+//  turnOffLED();
 }
 
 void pins_init()
 {
   pinMode(LED, OUTPUT);
-  pinMode(SOUND_SENSOR, INPUT); 
+  pinMode(LEFT_SENSOR, INPUT);
+  pinMode(MID_SENSOR, INPUT);
+  pinMode(RIGHT_SENSOR, INPUT);
 }
 void turnOnLED()
 {
-  digitalWrite(LED,HIGH);
+  digitalWrite(LED, HIGH);
 }
 void turnOffLED()
 {
-  digitalWrite(LED,LOW);
+  digitalWrite(LED, LOW);
 }
