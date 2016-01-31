@@ -1,0 +1,23 @@
+{
+  "name": "echolocatar",
+  "version": "1.0.0",
+  "description": "Visual feedback for the deaf.",
+  "main": "transmit.js",
+  "dependencies": {
+    "serialport": "^2.0.6"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Chrysaor716/EchoLocatAR.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Chrysaor716/EchoLocatAR/issues"
+  },
+  "homepage": "https://github.com/Chrysaor716/EchoLocatAR#readme"
+}
