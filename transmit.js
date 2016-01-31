@@ -29,7 +29,7 @@ function onPortOpen() {
 }
 
 function onData(data) {
-	console.log('Data received: ' + data);
+	console.log('Data received: ' + data.toString());
 }
 
 function onClose() {
