@@ -2,12 +2,16 @@
 // 	from the Arduino to the Unity mobile app
 //	using Socket.io
 
-var io = require('socket.io')();
-var app = require('http').createServer(handler);
-var fs = require('fs');
+var io = require('socket.io')({
+    transports: ['websocket']
+});
 
-app.listen(80);
+//var app = require('http').createServer(handler);
+//var fs = require('fs');
 
+//app.listen(80);
+
+io.attach(4567);
 //var SerialPort = require('serialport').SerialPort;
 var serialport = require('serialport');
 var SerialPort = serialport.SerialPort;
@@ -71,7 +75,7 @@ function handler (req, res) {
 
 io.on('connection', function(socket){
 	console.log('connection');
-	serialPort.on('data', function(data) {
+	serialport.on('data', function(data) {
 		 try {
                 	var jsondata = JSON.parse(data);
                 	console.log('Data received: %j', jsondata);
