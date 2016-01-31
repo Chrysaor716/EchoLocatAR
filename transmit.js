@@ -2,7 +2,10 @@
 // 	from the Arduino to the Unity mobile app
 //	using Socket.io
 
-var SerialPort = require('serialport').SerialPort;
+//var scrapper = require('json-scrape')();
+//var SerialPort = require('serialport').SerialPort;
+var serialport = require('serialport');
+var SerialPort = serialport.SerialPort;
 
 // Pass in the port the Arduino is running on
 //	through the command line
@@ -14,22 +17,32 @@ var SerialPort = require('serialport').SerialPort;
 // Capture serial port argument
 var port = process.argv[2]
 
-var sp = new SerialPort(port, {
-	baudrate: 9600
+//SerialPort.list(function(err, ports) {
+//	console.log(ports);
+//});
+
+var serialport = new SerialPort(port, {
+	baudrate: 9600,
+	parser: serialport.parsers.readline("\n")
 });
 
 // Event listeners
-sp.on('open', onPortOpen);
-sp.on('data', onData);
-sp.on('close', onClose);
-sp.on('error', onError);
+serialport.on('open', onPortOpen);
+serialport.on('data', onData);
+serialport.on('close', onClose);
+serialport.on('error', onError);
+
+//scrapper.on('data', function(jsondata) {
+//	console.log(jsondata);
+//});
 
 function onPortOpen() {
 	console.log('Port open!');
 }
 
 function onData(data) {
-	console.log('Data received: ' + data.toString());
+	console.log('Data received: ' + data);
+//	scrapper.write(data.toString());
 }
 
 function onClose() {

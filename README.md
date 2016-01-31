@@ -12,3 +12,4 @@ Additional useful hardware information can also be found here:
 
 SERVER: Node.js
 	- npm install serialport --save
+	- npm install json-scrape
